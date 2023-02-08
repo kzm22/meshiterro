@@ -9,13 +9,16 @@ class PostImagesController < ApplicationController
     #投稿データのuser_idを今ログインしているユーザーIDにすることで投稿データに持たせることができる。
     @post_image.user_id = current_user.id
     #格納されたデータを保存する
-    @post_image.save
+    if @post_image.save
     #post_images画面に戻る
-    redirect_to post_images_path
+      redirect_to post_images_path
+    else
+      render :new
+    end
   end
 
   def index
-    @post_images = PostImage.all
+    @post_images = PostImage.page(params[:page])
   end
 
   def show
